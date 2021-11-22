@@ -50,7 +50,7 @@ export default {
       var email = this.form.email;
       var password = this.form.password;
       try {
-        await fetch("http://127.0.0.1:8000/api/login", {
+        await fetch("https://dispatch-app-backend.herokuapp.com/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
