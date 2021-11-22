@@ -105,7 +105,7 @@ export default {
     },
   },
   async mounted() {
-    await fetch("http://127.0.0.1:8000/api/read/mail", {
+    await fetch("https://dispatch-app-backend.herokuapp.com/api/read/mail", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
