@@ -282,7 +282,7 @@ export default {
 
   async mounted() {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/user", {
+      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -307,7 +307,7 @@ export default {
       await this.$store.dispatch("setAdmin", false);
     }
 
-    const response = await fetch("http://127.0.0.1:8000/api/leads", {
+    const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/leads", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -319,7 +319,7 @@ export default {
 
   methods: {
     async test() {
-      const response = await fetch("http://127.0.0.1:8000/api/test", {
+      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/test", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -334,7 +334,7 @@ export default {
     async claimLead(lead) {
       const idLead = lead.id;
       const idUser = this.$store.state.id;
-      const response = await fetch("http://127.0.0.1:8000/api/lead/claim", {
+      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/lead/claim", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -385,7 +385,7 @@ export default {
     async addNote(lead) {
       let sender = this.$store.state.id;
       let message = this.noteText;
-      const response = await fetch("http://127.0.0.1:8000/api/note/", {
+      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/note/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

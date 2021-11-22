@@ -112,7 +112,7 @@ export default {
     });
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/user", {
+      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -157,7 +157,7 @@ export default {
   },
   methods: {
     async logout() {
-      await fetch("http://127.0.0.1:8000/api/logout", {
+      await fetch("https://dispatch-app-backend.herokuapp.com/api/logout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

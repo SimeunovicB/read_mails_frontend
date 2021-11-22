@@ -39,7 +39,7 @@ export default {
     };
   },
   async mounted() {
-    const response = await fetch("http://127.0.0.1:8000/api/users", {
+    const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/users", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -53,7 +53,7 @@ export default {
       console.log(email);
       // const idString = id.toString();
       // console.log(idString)
-      const response = await fetch("http://127.0.0.1:8000/api/user/activity", {
+      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user/activity", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
