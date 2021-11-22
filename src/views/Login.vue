@@ -4,7 +4,7 @@
       <div v-if="errorMessage != ''" class="alert-danger">
         <div show class="d-flex justify-content-center">{{ errorMessage }}</div>
       </div>
-      <div v-if="errorMessage == ''" class="loginTitle">Loginnn</div>
+      <div v-if="errorMessage == ''" class="loginTitle">Login</div>
       <div class="input-container ic1">
         <input
           id="email"
