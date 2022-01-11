@@ -105,14 +105,16 @@ export default {
     },
   },
   async mounted() {
-    await fetch("https://dispatch-app-backend.herokuapp.com/api/read/mail", {
+    // await fetch("https://dispatch-app-backend.herokuapp.com/api/read/mail", {
+    await fetch("http://localhost:8000/api/read/mail", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
     });
 
     try {
-      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user", {
+      // const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user", {
+      const response = await fetch("http://localhost:8000/api/user", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -138,7 +140,9 @@ export default {
       await this.$store.dispatch("setAdmin", false);
     }
 
-    // setInterval(function(){ alert("Hello"); }, 3000);
+    // setInterval(function() {
+    //   alert("Hello");
+    // }, 3000);
 
     // var that = this;
     // setInterval(async function () {
@@ -157,7 +161,8 @@ export default {
   },
   methods: {
     async logout() {
-      await fetch("https://dispatch-app-backend.herokuapp.com/api/logout", {
+      // await fetch("https://dispatch-app-backend.herokuapp.com/api/logout", {
+      await fetch("http://localhost:8000/api/logout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

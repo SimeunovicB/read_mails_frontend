@@ -1,11 +1,10 @@
 <template>
   <div class="register">
     <div class="registerForm">
-        <div v-if="errorMessage != ''" class="alert-danger">
-      <div show class="d-flex justify-content-center">{{errorMessage}}</div>
-    </div>
+      <div v-if="errorMessage != ''" class="alert-danger">
+        <div show class="d-flex justify-content-center">{{ errorMessage }}</div>
+      </div>
       <div v-if="errorMessage == ''" class="registerTitle">Welcome!</div>
-      <!-- <div class="subtitle">Let's create your account!</div> -->
       <div class="input-container ic1">
         <input
           id="firstname"
@@ -93,12 +92,12 @@ export default {
         password: "",
         confirmPassword: "",
       },
-      errorMessage: ""
+      errorMessage: "",
     };
   },
   methods: {
     register() {
-      const { firstName, lastName, email, phoneNumber, password} = this.form;
+      const { firstName, lastName, email, phoneNumber, password } = this.form;
       if (this.form.password === this.form.confirmPassword) {
         axios({
           method: "post",
@@ -109,22 +108,23 @@ export default {
             email,
             phoneNumber,
             password,
-            is_active: false
+            is_active: false,
           },
-        }).then((response) => {
-            if(response.status === 200) {
-                this.$router.replace("/");
-                return;
-            } 
-              this.errorMessage = "Error occured while registering!"
-        }).catch(error => {
+        })
+          .then((response) => {
+            if (response.status === 200) {
+              this.$router.replace("/");
+              return;
+            }
+            this.errorMessage = "Error occured while registering!";
+          })
+          .catch((error) => {
             console.log(error);
             this.errorMessage = "Error occured while registering!";
-        });
+          });
         return;
-      } 
-    this.errorMessage = "Passwords are not matching!"
-      
+      }
+      this.errorMessage = "Passwords are not matching!";
     },
   },
 };

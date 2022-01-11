@@ -123,7 +123,6 @@
             <button class="phoneNumber">{{ lead.phone }}</button>
           </div>
           <div>
-            <!-- <button>{{lead.phone_number}}</button> -->
             {{ lead.phone_number }}
           </div>
           <div class="entireLocation">
@@ -152,7 +151,6 @@
             <button class="claim" @click="claimLead(lead)">Claim</button>
           </div>
           <div v-else>
-            <!-- <button class="claimed" @click="unclaimLead(lead)">Unclaim</button> -->
             <button class="claimed" @click="claimLead(lead)">Reclaim</button>
           </div>
         </div>
@@ -197,7 +195,6 @@
         </div>
       </div>
     </div>
-    <!-- <button @click="test()">Test</button> -->
   </div>
 </template>
 
@@ -211,58 +208,7 @@ export default {
   components: { Pagination, LeadsTypeAndSearch, DateAndPriority },
   data() {
     return {
-      //:class="lead.agent ? 'claimedLead' : 'lead'
-
-      leads: [
-        // {
-        //   id: 1,
-        //   first_name: "Damjan",
-        //   last_name: "Banjac",
-        //   email: "baki@gmail.com",
-        //   phone_number: "064124124",
-        //   time_created: "29-10-2021",
-        //   last_changed: "29-10-2021",
-        //   year1: "2019",
-        //   make1: "Toyota",
-        //   model1: "Yarris",
-        //   vehicle_type_id1: "Hatchback",
-        //   pickup_city: "Sabatka",
-        //   pickup_state_code: "SU",
-        //   pickup_zip: 20000,
-        //   dropoff_city: "Novi Sad",
-        //   dropoff_state_code: "NS",
-        //   dropoff_zip: 21000,
-        //   estimated_ship_date: "31-10-2021",
-        //   vehicle_runs: "Yes",
-        //   ship_via_id: "Open",
-        //   priority: "No priority",
-        //   agent: "Maria",
-        // },
-        // {
-        //   id: 2,
-        //   first_name: "Damjan",
-        //   last_name: "Pantic",
-        //   email: "panta@gmail.com",
-        //   phone_number: "512521512",
-        //   time_created: "08-10-2021",
-        //   last_changed: "10-10-2021",
-        //   year1: "2020",
-        //   make1: "Audi",
-        //   model1: "A4",
-        //   vehicle_type_id1: "Coupe",
-        //   pickup_city: "Negotin",
-        //   pickup_state_code: "NE",
-        //   pickup_zip: 10000,
-        //   dropoff_city: "Novi Sad",
-        //   dropoff_state_code: "NS",
-        //   dropoff_zip: 21000,
-        //   estimated_ship_date: "14-10-2021",
-        //   vehicle_runs: "Yes",
-        //   ship_via_id: "Closed",
-        //   priority: "No priority",
-        //   agent: undefined,
-        // },
-      ],
+      leads: [],
       //   notes: [{
       //       id: 1,
       //       time: "11/11/2011",
@@ -282,11 +228,16 @@ export default {
 
   async mounted() {
     try {
-      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
+      const response = await fetch(
+        // "https://dispatch-app-backend.herokuapp.com/api/user",
+        "http://localhost:8000/api/user",
+
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        }
+      );
 
       // response.json().then(result => console.log(result))
 
@@ -307,11 +258,16 @@ export default {
       await this.$store.dispatch("setAdmin", false);
     }
 
-    const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/leads", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
+    const response = await fetch(
+      // "https://dispatch-app-backend.herokuapp.com/api/leads",
+      "http://localhost:8000/api/leads",
+
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      }
+    );
 
     const leads = await response.json();
     this.leads = leads;
@@ -319,11 +275,15 @@ export default {
 
   methods: {
     async test() {
-      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/test", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
+      const response = await fetch(
+        // "https://dispatch-app-backend.herokuapp.com/api/test",
+        "http://localhost:8000/api/test",
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        }
+      );
       console.log(response);
       console.log(response.data);
       const content = await response.json();
@@ -334,15 +294,20 @@ export default {
     async claimLead(lead) {
       const idLead = lead.id;
       const idUser = this.$store.state.id;
-      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/lead/claim", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          idLead,
-          idUser,
-        }),
-      });
+      const response = await fetch(
+        // "https://dispatch-app-backend.herokuapp.com/api/lead/claim",
+        "http://localhost:8000/api/lead/claim",
+
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            idLead,
+            idUser,
+          }),
+        }
+      );
       const content = await response.json();
       if (response.status == 200) {
         console.log("CONTENT ", content);
@@ -369,7 +334,6 @@ export default {
     // },
 
     notes(lead) {
-      console.log("notes");
       let leadIsActive = false;
       if (lead.notes_active === false) {
         leadIsActive = true;
@@ -385,24 +349,26 @@ export default {
     async addNote(lead) {
       let sender = this.$store.state.id;
       let message = this.noteText;
-      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/note/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          sender,
-          message,
-          lead,
-        }),
-      });
+      const response = await fetch(
+        // "https://dispatch-app-backend.herokuapp.com/api/note/",
+        "http://localhost:8000/api/note/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            sender,
+            message,
+            lead,
+          }),
+        }
+      );
 
       const content = await response.json();
       console.log("CONTENT ", content);
 
       for (let iterator in this.leads) {
         if (this.leads[iterator].id == lead) {
-          console.log("LEAD ", this.leads[iterator]);
-          console.log("NOTES ", this.leads[iterator].note_set);
           let adObject = {
             sender: "neki",
             message: "por",
@@ -412,11 +378,6 @@ export default {
           this.leads[iterator].note_set.push(adObject);
         }
       }
-
-      //   console.log("LEAD ID ", lead);
-      //   console.log("LEAD ", this.leads[parseInt(lead)])
-      //   console.log("NOTE SET ", this.leads[parseInt(lead)].note_set)
-      //   console.log("NOTES ", this.leads[lead].note_set);
     },
   },
 };

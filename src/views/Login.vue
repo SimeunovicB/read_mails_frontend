@@ -50,7 +50,8 @@ export default {
       var email = this.form.email;
       var password = this.form.password;
       try {
-        await fetch("https://dispatch-app-backend.herokuapp.com/api/login", {
+        // await fetch("https://dispatch-app-backend.herokuapp.com/api/login", {
+        await fetch("http://localhost:8000/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -58,12 +59,13 @@ export default {
             email,
             password,
           }),
-        }).then((response) => {
+        })
+          .then((response) => {
             if (response.status === 200) {
               this.$store.dispatch("setAuth", true);
               this.$router.replace("/leads");
               return;
-            } 
+            }
             this.$store.dispatch("setAuth", false);
             this.errorMessage = "Wrong credentials!";
           })
@@ -77,17 +79,6 @@ export default {
     },
 
     async test() {
-      // const response = await fetch("http://127.0.0.1:8000/api/test", {
-      //   method: "GET",
-      //   headers: { "Content-Type": "application/json" },
-      //   credentials: "include",
-      // })
-      //   console.log(response);
-      //   console.log(response.data);
-      //   const content = await response.json();
-      // console.log(content);
-      // console.log("IDE CONTENT", content);
-
       axios({
         method: "GET",
         headers: { "Content-Type": "application/json" },
