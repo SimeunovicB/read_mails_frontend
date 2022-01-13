@@ -107,7 +107,7 @@ export default {
   async mounted() {
     const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
     // await fetch("https://dispatch-app-backend.herokuapp.com/api/read/mail", {
-    await fetch(baseUrl + "api/read/mail", {
+    await fetch(baseUrl + "/api/read/mail", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
