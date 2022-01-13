@@ -37,29 +37,12 @@
                     {{ note.message }}
                   </div>
                 </div>
-                <!-- <div class="noteSubmit">
-                  <div class="noteSubmit2">
-                    <input
-                      class="notesInput"
-                      type="text"
-                      v-model="noteText"
-                    /><button @click="addNote(lead.id)" class="notesSubmitBtn">
-                      Submit
-                    </button>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
           <div class="row">
             <div>Priority: {{ lead.priority }}</div>
             <div>Follow-up: Not set</div>
-            <!-- <div class="priority">
-                Priority: {{lead.priority}}
-            </div>
-            <div>
-                Follow-up: Not set
-            </div> -->
           </div>
           <div class="priorityButtonsLead">
             <div class="tooltipLead">
@@ -72,7 +55,7 @@
             <div class="tooltipLead">
               <button
                 class="priorityLead priorityTwoLead"
-                @click="priorityFilter = 'Bad lead'"
+                @click="setBadLead(lead.id)"
               ></button>
               <span class="tooltiptextLead">Bad lead</span>
             </div>
@@ -217,6 +200,8 @@ export default {
       //   }],
       auth: false,
       noteText: "",
+      numberOfLeads: null,
+      proba: 1,
     };
   },
 
@@ -227,10 +212,11 @@ export default {
   },
 
   async mounted() {
+    const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
     try {
       const response = await fetch(
         // "https://dispatch-app-backend.herokuapp.com/api/user",
-        "http://localhost:8000/api/user",
+        baseUrl + "/api/user",
 
         {
           method: "GET",
@@ -260,8 +246,7 @@ export default {
 
     const response = await fetch(
       // "https://dispatch-app-backend.herokuapp.com/api/leads",
-      "http://localhost:8000/api/leads",
-
+      baseUrl + "/api/leads",
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -271,6 +256,32 @@ export default {
 
     const leads = await response.json();
     this.leads = leads;
+    this.numberOfLeads = leads.length;
+    console.log("Number proba 1 ", this.numberOfLeads);
+    // const numberOfLeads = leads.length;
+
+    // let iterator = 0;
+
+    setInterval(async () => {
+      const response = await fetch(baseUrl + "/api/leads/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          numberOfLeads: this.numberOfLeads,
+        }),
+      });
+      const content = await response.json();
+      console.log("Ogijev content ", content);
+      console.log("Number of leads 1 ", this.numberOfLeads);
+      if (content.length > 0) {
+        this.numberOfLeads = this.numberOfLeads + content.length;
+        this.leads = [...content, ...this.leads];
+      }
+      console.log("Content ", content[0]);
+      console.log("Content length ", content.length);
+      console.log("Number of leads 2 ", this.numberOfLeads);
+    }, 50000);
   },
 
   methods: {
@@ -294,9 +305,11 @@ export default {
     async claimLead(lead) {
       const idLead = lead.id;
       const idUser = this.$store.state.id;
+      const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
+
       const response = await fetch(
         // "https://dispatch-app-backend.herokuapp.com/api/lead/claim",
-        "http://localhost:8000/api/lead/claim",
+        baseUrl + "/api/lead/claim",
 
         {
           method: "PUT",
@@ -310,10 +323,7 @@ export default {
       );
       const content = await response.json();
       if (response.status == 200) {
-        console.log("CONTENT ", content);
-        console.log("PRE ", this.leads);
         this.leads = content;
-        console.log("POSLE ", this.leads);
       }
     },
 
@@ -349,9 +359,10 @@ export default {
     async addNote(lead) {
       let sender = this.$store.state.id;
       let message = this.noteText;
+      const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
       const response = await fetch(
         // "https://dispatch-app-backend.herokuapp.com/api/note/",
-        "http://localhost:8000/api/note/",
+        baseUrl + "/api/note/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -379,6 +390,31 @@ export default {
         }
       }
     },
+
+    async setBadLead(id) {
+      const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
+
+      const response = await fetch(
+        // "https://dispatch-app-backend.herokuapp.com/api/lead/claim",
+        baseUrl + "/api/lead/bad",
+
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            id,
+          }),
+        }
+      );
+      const content = await response.json();
+      if (response.status == 200) {
+        console.log("CONTENT ", content);
+        console.log("PRE ", this.leads);
+        this.leads = content;
+        console.log("POSLE ", this.leads);
+      }
+    },
   },
 };
 </script>
@@ -387,7 +423,7 @@ export default {
 .lead {
   background-color: white;
   /* background-color: rgb(219,219,219); */
-  margin: 15px;
+  margin: 40px 0px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 

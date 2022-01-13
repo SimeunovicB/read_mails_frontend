@@ -39,9 +39,10 @@ export default {
     };
   },
   async mounted() {
+    const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
     const response = await fetch(
       // "https://dispatch-app-backend.herokuapp.com/api/users",
-      "http://localhost:8000/api/users",
+      baseUrl + "/api/users",
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -55,11 +56,10 @@ export default {
   methods: {
     async changeUserActivity(email) {
       console.log(email);
-      // const idString = id.toString();
-      // console.log(idString)
+      const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
       const response = await fetch(
         // "https://dispatch-app-backend.herokuapp.com/api/user/activity",
-        "http://localhost:8000/api/user/activity",
+        baseUrl + "/api/user/activity",
 
         {
           method: "PUT",

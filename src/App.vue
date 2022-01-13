@@ -89,7 +89,7 @@
 <script>
 export default {
   name: "App",
-  components: {}, //Navigation, } // Pagination, LeadsTypeAndSearch, DateAndPriority, Leads },
+  components: {},
   data() {
     return {
       navigation: "",
@@ -105,8 +105,9 @@ export default {
     },
   },
   async mounted() {
+    const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
     // await fetch("https://dispatch-app-backend.herokuapp.com/api/read/mail", {
-    await fetch("http://localhost:8000/api/read/mail", {
+    await fetch(baseUrl + "/api/read/mail", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -114,7 +115,7 @@ export default {
 
     try {
       // const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user", {
-      const response = await fetch("http://localhost:8000/api/user", {
+      const response = await fetch(baseUrl + "/api/user", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -161,8 +162,10 @@ export default {
   },
   methods: {
     async logout() {
+      const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
+
       // await fetch("https://dispatch-app-backend.herokuapp.com/api/logout", {
-      await fetch("http://localhost:8000/api/logout", {
+      await fetch(baseUrl + "/api/logout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

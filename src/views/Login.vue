@@ -43,15 +43,19 @@ export default {
         password: "",
       },
       errorMessage: "",
+      VUE_APP_SERVER_BASE_URL: process.env.VUE_APP_SERVER_BASE_URL,
     };
   },
   methods: {
     async login() {
       var email = this.form.email;
       var password = this.form.password;
+      const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
       try {
         // await fetch("https://dispatch-app-backend.herokuapp.com/api/login", {
-        await fetch("http://localhost:8000/api/login", {
+        console.log(this.VUE_APP_SERVER_BASE_URL);
+        // let link = "http://localhost:8000";
+        await fetch(baseUrl + "/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
