@@ -39,11 +39,16 @@ export default {
     };
   },
   async mounted() {
-    const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/users", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
+    const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
+    const response = await fetch(
+      // "https://dispatch-app-backend.herokuapp.com/api/users",
+      baseUrl + "/api/users",
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      }
+    );
     var content = await response.json();
     console.log(content);
     this.users = content;
@@ -51,16 +56,20 @@ export default {
   methods: {
     async changeUserActivity(email) {
       console.log(email);
-      // const idString = id.toString();
-      // console.log(idString)
-      const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user/activity", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          email,
-        }),
-      });
+      const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
+      const response = await fetch(
+        // "https://dispatch-app-backend.herokuapp.com/api/user/activity",
+        baseUrl + "/api/user/activity",
+
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            email,
+          }),
+        }
+      );
       let content = await response.json();
       console.log("content ", content);
       if (response.status == 200) {
@@ -94,7 +103,6 @@ export default {
   color: white;
   background-color: rgb(8, 8, 41);
   border-radius: 30px;
-
 }
 
 /* .usersList { */
