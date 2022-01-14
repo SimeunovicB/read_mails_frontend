@@ -5,7 +5,12 @@
     <DateAndPriority />
     <div v-for="lead in leads" :key="lead.id">
       <div class="lead">
-        <div :class="lead.agent ? 'claimedLead' : 'unclaimedLead'">
+        <!-- <div :class="lead.agent ? 'claimedLead' : 'unclaimedLead'"> -->
+        <div
+          :class="
+            (lead.agent && 'claimedLead') || (!lead.agent && 'unclaimedLead')
+          "
+        >
           <div class="row">
             <div v-if="lead.agent" class="agent">
               Agent: <b>{{ lead.agent.firstName }} {{ lead.agent.lastName }}</b>
@@ -201,7 +206,7 @@ export default {
       auth: false,
       noteText: "",
       numberOfLeads: null,
-      proba: 1,
+      readMailsInterval: null,
     };
   },
 
@@ -228,8 +233,6 @@ export default {
       // response.json().then(result => console.log(result))
 
       const content = await response.json();
-      console.log(content);
-      console.log("ID ", content.id);
       if (response.status == 200) {
         this.$store.dispatch("setId", content.id);
         if (content.is_superuser) {
@@ -257,12 +260,14 @@ export default {
     const leads = await response.json();
     this.leads = leads;
     this.numberOfLeads = leads.length;
-    console.log("Number proba 1 ", this.numberOfLeads);
-    // const numberOfLeads = leads.length;
 
-    // let iterator = 0;
+    // await fetch(baseUrl + "/api/read/mail", {
+    //   method: "GET",
+    //   headers: { "Content-Type": "application/json" },
+    //   credentials: "include",
+    // });
 
-    setInterval(async () => {
+    const readMailsInterval = setInterval(async () => {
       const response = await fetch(baseUrl + "/api/leads/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -282,6 +287,14 @@ export default {
       console.log("Content length ", content.length);
       console.log("Number of leads 2 ", this.numberOfLeads);
     }, 50000);
+    this.readMailsInterval = readMailsInterval;
+  },
+
+  unmounted() {
+    const readMailsInterval = this.readMailsInterval;
+    clearInterval(readMailsInterval);
+
+    console.log("unmounte");
   },
 
   methods: {

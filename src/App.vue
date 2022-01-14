@@ -107,11 +107,11 @@ export default {
   async mounted() {
     const baseUrl = process.env.VUE_APP_SERVER_BASE_URL;
     // await fetch("https://dispatch-app-backend.herokuapp.com/api/read/mail", {
-    await fetch(baseUrl + "/api/read/mail", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
+    // await fetch(baseUrl + "/api/read/mail", {
+    //   method: "GET",
+    //   headers: { "Content-Type": "application/json" },
+    //   credentials: "include",
+    // });
 
     try {
       // const response = await fetch("https://dispatch-app-backend.herokuapp.com/api/user", {
@@ -124,7 +124,6 @@ export default {
       // response.json().then(result => console.log(result))
 
       const content = await response.json();
-      console.log(content);
       if (response.status == 200) {
         this.$store.dispatch("setAuth", true);
         if (content.is_superuser) {
@@ -171,7 +170,6 @@ export default {
         credentials: "include",
       })
         .then((response) => {
-          console.log(response);
           if (response.status == 200) {
             this.$router.replace("/");
             this.$store.dispatch("setAuth", false);
